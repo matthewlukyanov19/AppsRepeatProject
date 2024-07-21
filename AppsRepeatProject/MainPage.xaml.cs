@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers; 
 using Microsoft.Maui.Controls;
 
 namespace AppsRepeatProject
@@ -8,12 +9,15 @@ namespace AppsRepeatProject
         private readonly char[] vowels = new char[67];
         private readonly char[] consonants = new char[74];
         private Random random = new Random();
+        private System.Timers.Timer timer; 
+        private int timeLeft;
 
         public MainPage()
         {
             InitializeComponent();
             InitializeVowelArray();
             InitializeConsonantArray();
+            SubmitButton.IsEnabled = false; 
         }
 
         private void InitializeVowelArray()
@@ -54,7 +58,8 @@ namespace AppsRepeatProject
 
         private char GetRandomLetter()
         {
-            if (random.Next(2) == 0) // 50% chance to pick a vowel or consonant
+            // 50% chance to pick a vowel or consonant
+            if (random.Next(2) == 0) 
             {
                 int index = random.Next(0, 67);
                 return vowels[index];
@@ -86,7 +91,36 @@ namespace AppsRepeatProject
             var enteredText = $"{Entry0.Text}{Entry1.Text}{Entry2.Text}{Entry3.Text}{Entry4.Text}{Entry5.Text}{Entry6.Text}{Entry7.Text}{Entry8.Text}";
             DisplayAlert("Entered Text", enteredText, "OK");
         }
+
+        private void OnStartTimerClicked(object sender, EventArgs e)
+        {
+            timeLeft = 30;
+            TimerLabel.Text = timeLeft.ToString();
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Elapsed -= OnTimedEvent;
+                timer.Dispose();
+            }
+            timer = new System.Timers.Timer(1000); 
+            timer.Elapsed += OnTimedEvent;
+            timer.Start();
+            SubmitButton.IsEnabled = true; 
+        }
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            timeLeft--;
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                TimerLabel.Text = timeLeft.ToString();
+                if (timeLeft <= 0)
+                {
+                    timer.Stop();
+                    SubmitButton.IsEnabled = false; 
+                    DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
+                }
+            });
+        }
     }
 }
-
-

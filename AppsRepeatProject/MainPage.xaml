@@ -4,6 +4,8 @@
              x:Class="AppsRepeatProject.MainPage">
 
     <StackLayout Padding="10">
+        <Label x:Name="TimerLabel" Text="30" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" />
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -33,6 +35,7 @@
         </Grid>
 
         <Button Text="Generate Letters" Clicked="OnGenerateClicked" />
-        <Button Text="Submit" Clicked="OnSubmitClicked" />
+        <Button Text="Submit" Clicked="OnSubmitClicked" x:Name="SubmitButton" />
+        <Button Text="Start Timer" Clicked="OnStartTimerClicked" />
     </StackLayout>
 </ContentPage>
