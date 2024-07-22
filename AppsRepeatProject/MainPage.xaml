@@ -6,23 +6,24 @@
     <StackLayout Padding="10">
         <Label x:Name="TimerLabel" Text="30" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" />
 
+        <!-- Grid for consonant and vowel buttons -->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Create 9 Entry controls in the grid -->
+            <!-- Entries for letter input -->
             <Entry Grid.Row="0" Grid.Column="0" x:Name="Entry0" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
             <Entry Grid.Row="0" Grid.Column="1" x:Name="Entry1" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
             <Entry Grid.Row="0" Grid.Column="2" x:Name="Entry2" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
@@ -34,8 +35,36 @@
             <Entry Grid.Row="0" Grid.Column="8" x:Name="Entry8" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
         </Grid>
 
-        <Button Text="Generate Letters" Clicked="OnGenerateClicked" />
-        <Button Text="Submit" Clicked="OnSubmitClicked" x:Name="SubmitButton" />
+        <!-- Consonant and Vowel Buttons -->
+        <Button Text="Consonant" Clicked="OnConsonantClicked" x:Name="ConsonantButton" />
+        <Button Text="Vowel" Clicked="OnVowelClicked" x:Name="VowelButton" />
+
+        <!-- 3x3 Grid for displaying selected letters -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" x:Name="Letter0" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="0" Grid.Column="1" x:Name="Letter1" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="0" Grid.Column="2" x:Name="Letter2" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="0" x:Name="Letter3" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="1" x:Name="Letter4" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="2" x:Name="Letter5" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="2" Grid.Column="0" x:Name="Letter6" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="2" Grid.Column="1" x:Name="Letter7" FontSize="Large" HorizontalTextAlignment="Center" />
+            <Label Grid.Row="2" Grid.Column="2" x:Name="Letter8" FontSize="Large" HorizontalTextAlignment="Center" />
+        </Grid>
+
+        <Button Text="Submit" Clicked="OnSubmitClicked" x:Name="SubmitButton" IsEnabled="False" />
         <Button Text="Start Timer" Clicked="OnStartTimerClicked" />
     </StackLayout>
 </ContentPage>
+

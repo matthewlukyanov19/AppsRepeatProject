@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Timers; 
+using System.Timers; // Add this using directive
 using Microsoft.Maui.Controls;
 
 namespace AppsRepeatProject
@@ -9,15 +9,16 @@ namespace AppsRepeatProject
         private readonly char[] vowels = new char[67];
         private readonly char[] consonants = new char[74];
         private Random random = new Random();
-        private System.Timers.Timer timer; 
+        private System.Timers.Timer timer; // Specify full namespace
         private int timeLeft;
+        private int lettersPicked;
 
         public MainPage()
         {
             InitializeComponent();
             InitializeVowelArray();
             InitializeConsonantArray();
-            SubmitButton.IsEnabled = false; 
+            SubmitButton.IsEnabled = false; // Initially disable the Submit button
         }
 
         private void InitializeVowelArray()
@@ -56,39 +57,86 @@ namespace AppsRepeatProject
             for (int i = 0; i < 1; i++) consonants[index++] = 'Z';
         }
 
-        private char GetRandomLetter()
+        private char GetRandomVowel()
         {
-            // 50% chance to pick a vowel or consonant
-            if (random.Next(2) == 0) 
+            int index = random.Next(0, 67);
+            return vowels[index];
+        }
+
+        private char GetRandomConsonant()
+        {
+            int index = random.Next(0, 74);
+            return consonants[index];
+        }
+
+        private void OnConsonantClicked(object sender, EventArgs e)
+        {
+            if (lettersPicked < 9)
             {
-                int index = random.Next(0, 67);
-                return vowels[index];
-            }
-            else
-            {
-                int index = random.Next(0, 74);
-                return consonants[index];
+                SetLetter(GetRandomConsonant());
+                lettersPicked++;
+                if (lettersPicked == 9)
+                {
+                    ConsonantButton.IsEnabled = false;
+                    VowelButton.IsEnabled = false;
+                    SubmitButton.IsEnabled = true;
+                }
             }
         }
 
-        private void OnGenerateClicked(object sender, EventArgs e)
+        private void OnVowelClicked(object sender, EventArgs e)
         {
-            // Set the text of each entry to a random letter (vowel or consonant) when the button is clicked
-            Entry0.Text = GetRandomLetter().ToString();
-            Entry1.Text = GetRandomLetter().ToString();
-            Entry2.Text = GetRandomLetter().ToString();
-            Entry3.Text = GetRandomLetter().ToString();
-            Entry4.Text = GetRandomLetter().ToString();
-            Entry5.Text = GetRandomLetter().ToString();
-            Entry6.Text = GetRandomLetter().ToString();
-            Entry7.Text = GetRandomLetter().ToString();
-            Entry8.Text = GetRandomLetter().ToString();
+            if (lettersPicked < 9)
+            {
+                SetLetter(GetRandomVowel());
+                lettersPicked++;
+                if (lettersPicked == 9)
+                {
+                    ConsonantButton.IsEnabled = false;
+                    VowelButton.IsEnabled = false;
+                    SubmitButton.IsEnabled = true;
+                }
+            }
+        }
+
+        private void SetLetter(char letter)
+        {
+            switch (lettersPicked)
+            {
+                case 0:
+                    Letter0.Text = letter.ToString();
+                    break;
+                case 1:
+                    Letter1.Text = letter.ToString();
+                    break;
+                case 2:
+                    Letter2.Text = letter.ToString();
+                    break;
+                case 3:
+                    Letter3.Text = letter.ToString();
+                    break;
+                case 4:
+                    Letter4.Text = letter.ToString();
+                    break;
+                case 5:
+                    Letter5.Text = letter.ToString();
+                    break;
+                case 6:
+                    Letter6.Text = letter.ToString();
+                    break;
+                case 7:
+                    Letter7.Text = letter.ToString();
+                    break;
+                case 8:
+                    Letter8.Text = letter.ToString();
+                    break;
+            }
         }
 
         private void OnSubmitClicked(object sender, EventArgs e)
         {
             // Concatenate the text from all entries and display it in an alert
-            var enteredText = $"{Entry0.Text}{Entry1.Text}{Entry2.Text}{Entry3.Text}{Entry4.Text}{Entry5.Text}{Entry6.Text}{Entry7.Text}{Entry8.Text}";
+            var enteredText = $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
             DisplayAlert("Entered Text", enteredText, "OK");
         }
 
@@ -102,10 +150,10 @@ namespace AppsRepeatProject
                 timer.Elapsed -= OnTimedEvent;
                 timer.Dispose();
             }
-            timer = new System.Timers.Timer(1000); 
+            timer = new System.Timers.Timer(1000); // Specify full namespace
             timer.Elapsed += OnTimedEvent;
             timer.Start();
-            SubmitButton.IsEnabled = true; 
+            SubmitButton.IsEnabled = true; // Enable the Submit button when timer starts
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
@@ -117,7 +165,7 @@ namespace AppsRepeatProject
                 if (timeLeft <= 0)
                 {
                     timer.Stop();
-                    SubmitButton.IsEnabled = false; 
+                    SubmitButton.IsEnabled = false; // Disable the Submit button when time runs out
                     DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
                 }
             });
