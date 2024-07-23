@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Timers; // Add this using directive
+using System.Timers; 
 using Microsoft.Maui.Controls;
 
 namespace AppsRepeatProject
@@ -9,16 +9,17 @@ namespace AppsRepeatProject
         private readonly char[] vowels = new char[67];
         private readonly char[] consonants = new char[74];
         private Random random = new Random();
-        private System.Timers.Timer timer; // Specify full namespace
+        private System.Timers.Timer timer; 
         private int timeLeft;
         private int lettersPicked;
+        private bool isPlayerOneTurn = true;
 
         public MainPage()
         {
             InitializeComponent();
             InitializeVowelArray();
             InitializeConsonantArray();
-            SubmitButton.IsEnabled = false; // Initially disable the Submit button
+            SubmitButton.IsEnabled = false; 
         }
 
         private void InitializeVowelArray()
@@ -59,14 +60,12 @@ namespace AppsRepeatProject
 
         private char GetRandomVowel()
         {
-            int index = random.Next(0, 67);
-            return vowels[index];
+            return vowels[random.Next(vowels.Length)];
         }
 
         private char GetRandomConsonant()
         {
-            int index = random.Next(0, 74);
-            return consonants[index];
+            return consonants[random.Next(consonants.Length)];
         }
 
         private void OnConsonantClicked(object sender, EventArgs e)
@@ -135,9 +134,39 @@ namespace AppsRepeatProject
 
         private void OnSubmitClicked(object sender, EventArgs e)
         {
+            // Stop the timer when submitting
+            if (timer != null)
+            {
+                timer.Stop();
+            }
+
             // Concatenate the text from all entries and display it in an alert
             var enteredText = $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
             DisplayAlert("Entered Text", enteredText, "OK");
+
+            // Resets game for next player
+            lettersPicked = 0;
+            ConsonantButton.IsEnabled = true;
+            VowelButton.IsEnabled = true;
+            SubmitButton.IsEnabled = false;
+            ClearLetters();
+
+            // Switches the players
+            isPlayerOneTurn = !isPlayerOneTurn;
+            CurrentPlayerLabel.Text = isPlayerOneTurn ? "Player 1's Turn" : "Player 2's Turn";
+        }
+
+        private void ClearLetters()
+        {
+            Letter0.Text = string.Empty;
+            Letter1.Text = string.Empty;
+            Letter2.Text = string.Empty;
+            Letter3.Text = string.Empty;
+            Letter4.Text = string.Empty;
+            Letter5.Text = string.Empty;
+            Letter6.Text = string.Empty;
+            Letter7.Text = string.Empty;
+            Letter8.Text = string.Empty;
         }
 
         private void OnStartTimerClicked(object sender, EventArgs e)
@@ -150,10 +179,10 @@ namespace AppsRepeatProject
                 timer.Elapsed -= OnTimedEvent;
                 timer.Dispose();
             }
-            timer = new System.Timers.Timer(1000); // Specify full namespace
+            timer = new System.Timers.Timer(1000); 
             timer.Elapsed += OnTimedEvent;
             timer.Start();
-            SubmitButton.IsEnabled = true; // Enable the Submit button when timer starts
+            SubmitButton.IsEnabled = true; 
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
@@ -165,7 +194,7 @@ namespace AppsRepeatProject
                 if (timeLeft <= 0)
                 {
                     timer.Stop();
-                    SubmitButton.IsEnabled = false; // Disable the Submit button when time runs out
+                    SubmitButton.IsEnabled = false; 
                     DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
                 }
             });

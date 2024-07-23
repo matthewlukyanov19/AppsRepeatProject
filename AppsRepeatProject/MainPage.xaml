@@ -5,6 +5,7 @@
 
     <StackLayout Padding="10">
         <Label x:Name="TimerLabel" Text="30" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" />
+        <Label x:Name="CurrentPlayerLabel" Text="Player 1's Turn" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" />
 
         <!-- Grid for consonant and vowel buttons -->
         <Grid>
@@ -67,4 +68,5 @@
         <Button Text="Start Timer" Clicked="OnStartTimerClicked" />
     </StackLayout>
 </ContentPage>
+
 
