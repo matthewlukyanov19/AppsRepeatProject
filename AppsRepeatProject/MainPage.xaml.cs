@@ -1,18 +1,22 @@
 ﻿using System;
-using System.Timers; 
+using System.Timers;
 using Microsoft.Maui.Controls;
 
 namespace AppsRepeatProject
 {
     public partial class MainPage : ContentPage
     {
+        // Arrays for vowels and consonants
         private readonly char[] vowels = new char[67];
         private readonly char[] consonants = new char[74];
         private Random random = new Random();
-        private System.Timers.Timer timer; 
+        private System.Timers.Timer timer;
         private int timeLeft;
         private int lettersPicked;
         private bool isPlayerOneTurn = true;
+        private string playerOneResult = string.Empty;
+        private string playerTwoResult = string.Empty;
+        private bool isGameFinished = false;
 
         public MainPage()
         {
@@ -22,6 +26,7 @@ namespace AppsRepeatProject
             SubmitButton.IsEnabled = false; 
         }
 
+        // Initialize the vowel array with the specified units
         private void InitializeVowelArray()
         {
             int index = 0;
@@ -32,6 +37,7 @@ namespace AppsRepeatProject
             for (int i = 0; i < 5; i++) vowels[index++] = 'U';
         }
 
+        // Initialize the consonant array with the specified units
         private void InitializeConsonantArray()
         {
             int index = 0;
@@ -58,19 +64,22 @@ namespace AppsRepeatProject
             for (int i = 0; i < 1; i++) consonants[index++] = 'Z';
         }
 
+        // Get a random vowel from the vowel array
         private char GetRandomVowel()
         {
             return vowels[random.Next(vowels.Length)];
         }
 
+        // Get a random consonant from the consonant array
         private char GetRandomConsonant()
         {
             return consonants[random.Next(consonants.Length)];
         }
 
+        // Handler for when the Consonant button is clicked, sets random consonant and is disabled after 9 letters entered
         private void OnConsonantClicked(object sender, EventArgs e)
         {
-            if (lettersPicked < 9)
+            if (!isGameFinished && lettersPicked < 9)
             {
                 SetLetter(GetRandomConsonant());
                 lettersPicked++;
@@ -83,9 +92,10 @@ namespace AppsRepeatProject
             }
         }
 
+        // Handler for when the Vowel button is clicked, same functions as consonant handler above
         private void OnVowelClicked(object sender, EventArgs e)
         {
-            if (lettersPicked < 9)
+            if (!isGameFinished && lettersPicked < 9)
             {
                 SetLetter(GetRandomVowel());
                 lettersPicked++;
@@ -98,6 +108,7 @@ namespace AppsRepeatProject
             }
         }
 
+        // Set a letter in the right position of the 3x3 grid based on the number of letters picked
         private void SetLetter(char letter)
         {
             switch (lettersPicked)
@@ -132,30 +143,40 @@ namespace AppsRepeatProject
             }
         }
 
+        // Handler for when the Submit button is clicked, stops the timer when submited
         private void OnSubmitClicked(object sender, EventArgs e)
         {
-            // Stop the timer when submitting
             if (timer != null)
             {
                 timer.Stop();
             }
 
-            // Concatenate the text from all entries and display it in an alert
+            // Concatenate the text from all entries
             var enteredText = $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
-            DisplayAlert("Entered Text", enteredText, "OK");
 
-            // Resets game for next player
-            lettersPicked = 0;
-            ConsonantButton.IsEnabled = true;
-            VowelButton.IsEnabled = true;
-            SubmitButton.IsEnabled = false;
-            ClearLetters();
-
-            // Switches the players
-            isPlayerOneTurn = !isPlayerOneTurn;
-            CurrentPlayerLabel.Text = isPlayerOneTurn ? "Player 1's Turn" : "Player 2's Turn";
+            if (isPlayerOneTurn)
+            {
+                playerOneResult = enteredText;
+                isPlayerOneTurn = false;
+                CurrentPlayerLabel.Text = "Player 2's Turn";
+                lettersPicked = 0;
+                ConsonantButton.IsEnabled = false;
+                VowelButton.IsEnabled = false;
+                SubmitButton.IsEnabled = false;
+                ClearLetters();
+            }
+            else
+            {
+                playerTwoResult = enteredText;
+                isGameFinished = true;
+                SubmitButton.IsEnabled = false;
+                ConsonantButton.IsEnabled = false;
+                VowelButton.IsEnabled = false;
+                DisplayAlert("Game Over", $"Player 1's Result: {playerOneResult}\nPlayer 2's Result: {playerTwoResult}", "OK");
+            }
         }
 
+        // Clears all letter boxes
         private void ClearLetters()
         {
             Letter0.Text = string.Empty;
@@ -169,6 +190,7 @@ namespace AppsRepeatProject
             Letter8.Text = string.Empty;
         }
 
+        // Handler for when the Start Timer button is clicked, starts timer for 30 seconds and stops any existing timers
         private void OnStartTimerClicked(object sender, EventArgs e)
         {
             timeLeft = 30;
@@ -183,8 +205,11 @@ namespace AppsRepeatProject
             timer.Elapsed += OnTimedEvent;
             timer.Start();
             SubmitButton.IsEnabled = true; 
+            ConsonantButton.IsEnabled = true; 
+            VowelButton.IsEnabled = true; 
         }
 
+        // Timer event handler for updating the countdown
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             timeLeft--;
@@ -195,9 +220,17 @@ namespace AppsRepeatProject
                 {
                     timer.Stop();
                     SubmitButton.IsEnabled = false; 
-                    DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
+                    if (!isGameFinished)
+                    {
+                        DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
+                        isGameFinished = true;
+                        ConsonantButton.IsEnabled = false;
+                        VowelButton.IsEnabled = false;
+                    }
                 }
             });
         }
     }
 }
+
+

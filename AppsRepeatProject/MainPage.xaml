@@ -36,10 +36,6 @@
             <Entry Grid.Row="0" Grid.Column="8" x:Name="Entry8" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
         </Grid>
 
-        <!-- Consonant and Vowel Buttons -->
-        <Button Text="Consonant" Clicked="OnConsonantClicked" x:Name="ConsonantButton" />
-        <Button Text="Vowel" Clicked="OnVowelClicked" x:Name="VowelButton" />
-
         <!-- 3x3 Grid for displaying selected letters -->
         <Grid>
             <Grid.RowDefinitions>
@@ -64,9 +60,12 @@
             <Label Grid.Row="2" Grid.Column="2" x:Name="Letter8" FontSize="Large" HorizontalTextAlignment="Center" />
         </Grid>
 
+        <Button Text="Consonant" Clicked="OnConsonantClicked" x:Name="ConsonantButton" IsEnabled="False" />
+        <Button Text="Vowel" Clicked="OnVowelClicked" x:Name="VowelButton" IsEnabled="False" />
         <Button Text="Submit" Clicked="OnSubmitClicked" x:Name="SubmitButton" IsEnabled="False" />
         <Button Text="Start Timer" Clicked="OnStartTimerClicked" />
     </StackLayout>
 </ContentPage>
+
 
 
