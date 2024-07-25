@@ -10,20 +10,20 @@ namespace AppsRepeatProject
         private readonly char[] vowels = new char[67];
         private readonly char[] consonants = new char[74];
         private Random random = new Random();
-        private System.Timers.Timer timer;
-        private int timeLeft;
+        private System.Timers.Timer timer; 
+        private int timeLeft; 
         private int lettersPicked;
-        private bool isPlayerOneTurn = true;
-        private string playerOneResult = string.Empty;
-        private string playerTwoResult = string.Empty;
-        private bool isGameFinished = false;
+        private bool isPlayerOneTurn = true; 
+        private string playerOneResult = string.Empty; 
+        private string playerTwoResult = string.Empty; 
+        private bool isGameFinished = false; 
 
         public MainPage()
         {
             InitializeComponent();
             InitializeVowelArray();
             InitializeConsonantArray();
-            SubmitButton.IsEnabled = false; 
+            SubmitButton.IsEnabled = false;
         }
 
         // Initialize the vowel array with the specified units
@@ -81,15 +81,10 @@ namespace AppsRepeatProject
         {
             if (!isGameFinished && lettersPicked < 9)
             {
-                SetLetter(GetRandomConsonant());
+                SetLetter(GetRandomConsonant()); 
                 lettersPicked++;
-                if (lettersPicked == 9)
-                {
-                    ConsonantButton.IsEnabled = false;
-                    VowelButton.IsEnabled = false;
-                    SubmitButton.IsEnabled = true;
-                }
             }
+                CheckSubmitEnabled(); 
         }
 
         // Handler for when the Vowel button is clicked, same functions as consonant handler above
@@ -97,14 +92,9 @@ namespace AppsRepeatProject
         {
             if (!isGameFinished && lettersPicked < 9)
             {
-                SetLetter(GetRandomVowel());
+                SetLetter(GetRandomVowel()); 
                 lettersPicked++;
-                if (lettersPicked == 9)
-                {
-                    ConsonantButton.IsEnabled = false;
-                    VowelButton.IsEnabled = false;
-                    SubmitButton.IsEnabled = true;
-                }
+                CheckSubmitEnabled(); 
             }
         }
 
@@ -143,15 +133,21 @@ namespace AppsRepeatProject
             }
         }
 
+        // Check if all 9 letters are entered and enable Submit button if true
+        private void CheckSubmitEnabled()
+        {
+            SubmitButton.IsEnabled = lettersPicked == 9;
+        }
+
         // Handler for when the Submit button is clicked, stops the timer when submited
         private void OnSubmitClicked(object sender, EventArgs e)
         {
             if (timer != null)
             {
-                timer.Stop();
+                timer.Stop(); // Stop the timer when submitting
             }
 
-            // Concatenate the text from all entries
+            // Concatenate the text from all letter entries
             var enteredText = $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
 
             if (isPlayerOneTurn)
@@ -176,7 +172,7 @@ namespace AppsRepeatProject
             }
         }
 
-        // Clears all letter boxes
+        // Clear all letter boxes
         private void ClearLetters()
         {
             Letter0.Text = string.Empty;
@@ -201,12 +197,12 @@ namespace AppsRepeatProject
                 timer.Elapsed -= OnTimedEvent;
                 timer.Dispose();
             }
-            timer = new System.Timers.Timer(1000); 
+            // Create a new timer and start it
+            timer = new System.Timers.Timer(1000);
             timer.Elapsed += OnTimedEvent;
             timer.Start();
-            SubmitButton.IsEnabled = true; 
-            ConsonantButton.IsEnabled = true; 
-            VowelButton.IsEnabled = true; 
+            ConsonantButton.IsEnabled = true;
+            VowelButton.IsEnabled = true;
         }
 
         // Timer event handler for updating the countdown
@@ -219,7 +215,7 @@ namespace AppsRepeatProject
                 if (timeLeft <= 0)
                 {
                     timer.Stop();
-                    SubmitButton.IsEnabled = false; 
+                    SubmitButton.IsEnabled = false;
                     if (!isGameFinished)
                     {
                         DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
@@ -232,5 +228,4 @@ namespace AppsRepeatProject
         }
     }
 }
-
 
