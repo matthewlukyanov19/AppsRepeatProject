@@ -227,7 +227,7 @@ namespace AppsRepeatProject
             });
         }
 
-        // Handler for the Finish Game button click
+        // Handler for the Finish Game button clicks
         private void OnFinishGameClicked(object sender, EventArgs e)
         {
             if (timer != null)
