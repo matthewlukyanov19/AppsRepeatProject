@@ -226,6 +226,17 @@ namespace AppsRepeatProject
                 }
             });
         }
+
+        // Handler for the Finish Game button click
+        private void OnFinishGameClicked(object sender, EventArgs e)
+        {
+            if (timer != null)
+            {
+                timer.Stop(); 
+            }
+            Application.Current.Quit(); 
+        }
     }
 }
+ 
 

@@ -64,6 +64,8 @@
         <Button Text="Vowel" Clicked="OnVowelClicked" x:Name="VowelButton" IsEnabled="False" />
         <Button Text="Submit" Clicked="OnSubmitClicked" x:Name="SubmitButton" IsEnabled="False" />
         <Button Text="Start Timer" Clicked="OnStartTimerClicked" />
+        <Button Text="Finish Game" Clicked="OnFinishGameClicked" x:Name="FinishGameButton" VerticalOptions="CenterAndExpand"  HorizontalOptions="CenterAndExpand"/>
+
     </StackLayout>
 </ContentPage>
 
