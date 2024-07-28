@@ -10,13 +10,14 @@ namespace AppsRepeatProject
         private readonly char[] vowels = new char[67];
         private readonly char[] consonants = new char[74];
         private Random random = new Random();
-        private System.Timers.Timer timer; 
-        private int timeLeft; 
+        private System.Timers.Timer timer;
+        private int timeLeft;
         private int lettersPicked;
-        private bool isPlayerOneTurn = true; 
-        private string playerOneResult = string.Empty; 
-        private string playerTwoResult = string.Empty; 
-        private bool isGameFinished = false; 
+        private bool isPlayerOneTurn = true;
+        private string playerOneResult = string.Empty;
+        private string playerTwoResult = string.Empty;
+        private bool isGameFinished = false;
+        private int roundNumber = 1;
 
         public MainPage()
         {
@@ -24,6 +25,7 @@ namespace AppsRepeatProject
             InitializeVowelArray();
             InitializeConsonantArray();
             SubmitButton.IsEnabled = false;
+            UpdateRoundLabel();
         }
 
         // Initialize the vowel array with the specified units
@@ -77,28 +79,31 @@ namespace AppsRepeatProject
         }
 
         // Handler for when the Consonant button is clicked, sets random consonant and is disabled after 9 letters entered
+
         private void OnConsonantClicked(object sender, EventArgs e)
         {
             if (!isGameFinished && lettersPicked < 9)
             {
-                SetLetter(GetRandomConsonant()); 
+                SetLetter(GetRandomConsonant());
                 lettersPicked++;
+                CheckSubmitEnabled();
             }
-                CheckSubmitEnabled(); 
         }
 
         // Handler for when the Vowel button is clicked, same functions as consonant handler above
+
         private void OnVowelClicked(object sender, EventArgs e)
         {
             if (!isGameFinished && lettersPicked < 9)
             {
-                SetLetter(GetRandomVowel()); 
+                SetLetter(GetRandomVowel());
                 lettersPicked++;
-                CheckSubmitEnabled(); 
+                CheckSubmitEnabled();
             }
         }
 
         // Set a letter in the right position of the 3x3 grid based on the number of letters picked
+
         private void SetLetter(char letter)
         {
             switch (lettersPicked)
@@ -134,42 +139,10 @@ namespace AppsRepeatProject
         }
 
         // Check if all 9 letters are entered and enable Submit button if true
+
         private void CheckSubmitEnabled()
         {
             SubmitButton.IsEnabled = lettersPicked == 9;
-        }
-
-        // Handler for when the Submit button is clicked, stops the timer when submited
-        private void OnSubmitClicked(object sender, EventArgs e)
-        {
-            if (timer != null)
-            {
-                timer.Stop(); // Stop the timer when submitting
-            }
-
-            // Concatenate the text from all letter entries
-            var enteredText = $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
-
-            if (isPlayerOneTurn)
-            {
-                playerOneResult = enteredText;
-                isPlayerOneTurn = false;
-                CurrentPlayerLabel.Text = "Player 2's Turn";
-                lettersPicked = 0;
-                ConsonantButton.IsEnabled = false;
-                VowelButton.IsEnabled = false;
-                SubmitButton.IsEnabled = false;
-                ClearLetters();
-            }
-            else
-            {
-                playerTwoResult = enteredText;
-                isGameFinished = true;
-                SubmitButton.IsEnabled = false;
-                ConsonantButton.IsEnabled = false;
-                VowelButton.IsEnabled = false;
-                DisplayAlert("Game Over", $"Player 1's Result: {playerOneResult}\nPlayer 2's Result: {playerTwoResult}", "OK");
-            }
         }
 
         // Clear all letter boxes
@@ -186,57 +159,115 @@ namespace AppsRepeatProject
             Letter8.Text = string.Empty;
         }
 
-        // Handler for when the Start Timer button is clicked, starts timer for 30 seconds and stops any existing timers
+        // Handler for when the Submit button is clicked, stops the timer when submited
+
+        private void OnSubmitClicked(object sender, EventArgs e)
+        {
+            timer.Stop();
+            isGameFinished = true;
+            if (isPlayerOneTurn)
+            {
+                playerOneResult = GetLetters();
+                isPlayerOneTurn = false;
+                CurrentPlayerLabel.Text = "Player 2's Turn";
+                ClearLetters();
+                lettersPicked = 0;
+                timeLeft = 30;
+                TimerLabel.Text = timeLeft.ToString();
+                StartTimer();
+            }
+            else
+            {
+                playerTwoResult = GetLetters();
+                DisplayAlert("Results", $"Player 1: {playerOneResult}\nPlayer 2: {playerTwoResult}", "OK");
+                StartNewRoundButton.IsEnabled = true;
+                ConsonantButton.IsEnabled = false;
+                VowelButton.IsEnabled = false;
+                SubmitButton.IsEnabled = false;
+            }
+        }
+        
+        //Returns the letters
+        private string GetLetters()
+        {
+            return $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
+        }
+
+        //Starts the timer 
         private void OnStartTimerClicked(object sender, EventArgs e)
+        {
+            StartTimer();
+        }
+
+        private void StartTimer()
         {
             timeLeft = 30;
             TimerLabel.Text = timeLeft.ToString();
-            if (timer != null)
-            {
-                timer.Stop();
-                timer.Elapsed -= OnTimedEvent;
-                timer.Dispose();
-            }
-            // Create a new timer and start it
             timer = new System.Timers.Timer(1000);
             timer.Elapsed += OnTimedEvent;
             timer.Start();
             ConsonantButton.IsEnabled = true;
             VowelButton.IsEnabled = true;
+            SubmitButton.IsEnabled = false;
+            lettersPicked = 0;
+            ClearLetters();
+            isGameFinished = false;
         }
 
-        // Timer event handler for updating the countdown
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            timeLeft--;
+            timeLeft--; 
             Device.BeginInvokeOnMainThread(() =>
             {
                 TimerLabel.Text = timeLeft.ToString();
                 if (timeLeft <= 0)
                 {
-                    timer.Stop();
-                    SubmitButton.IsEnabled = false;
+                    timer.Stop(); 
+                    SubmitButton.IsEnabled = false; 
                     if (!isGameFinished)
                     {
                         DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
-                        isGameFinished = true;
-                        ConsonantButton.IsEnabled = false;
-                        VowelButton.IsEnabled = false;
+                        isGameFinished = true; 
+                        ConsonantButton.IsEnabled = false; 
+                        VowelButton.IsEnabled = false; 
                     }
                 }
             });
         }
 
-        // Handler for the Finish Game button clicks
-        private void OnFinishGameClicked(object sender, EventArgs e)
+        //Handler for starting a new round
+        private void OnStartNewRoundClicked(object sender, EventArgs e)
         {
             if (timer != null)
             {
                 timer.Stop(); 
             }
-            Application.Current.Quit(); 
+
+            roundNumber++; 
+            UpdateRoundLabel(); 
+
+           
+            isPlayerOneTurn = true;
+            playerOneResult = string.Empty;
+            playerTwoResult = string.Empty;
+            lettersPicked = 0;
+            isGameFinished = false;
+            ClearLetters();
+
+            
+            CurrentPlayerLabel.Text = "Player 1's Turn";
+            ConsonantButton.IsEnabled = false;
+            VowelButton.IsEnabled = false;
+            SubmitButton.IsEnabled = false;
+            StartNewRoundButton.IsEnabled = false; 
+        }
+
+        private void UpdateRoundLabel()
+        {
+            RoundLabel.Text = $"Round {roundNumber}";
         }
     }
 }
- //Tesing Commit
+
+
 
