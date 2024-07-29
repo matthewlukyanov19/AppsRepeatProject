@@ -19,13 +19,20 @@ namespace AppsRepeatProject
         private bool isGameFinished = false;
         private int roundNumber = 1;
 
+        // New fields for player names
+        private string playerOneName;
+        private string playerTwoName;
+
         public MainPage()
         {
             InitializeComponent();
             InitializeVowelArray();
             InitializeConsonantArray();
             SubmitButton.IsEnabled = false;
+            StartNewRoundButton.IsEnabled = false;
             UpdateRoundLabel();
+            // Hide game elements initially
+            HideGameElements();
         }
 
         // Initialize the vowel array with the specified units
@@ -78,8 +85,7 @@ namespace AppsRepeatProject
             return consonants[random.Next(consonants.Length)];
         }
 
-        // Handler for when the Consonant button is clicked, sets random consonant and is disabled after 9 letters entered
-
+        // Handler for when the Consonant button is clicked
         private void OnConsonantClicked(object sender, EventArgs e)
         {
             if (!isGameFinished && lettersPicked < 9)
@@ -90,8 +96,7 @@ namespace AppsRepeatProject
             }
         }
 
-        // Handler for when the Vowel button is clicked, same functions as consonant handler above
-
+        // Handler for when the Vowel button is clicked
         private void OnVowelClicked(object sender, EventArgs e)
         {
             if (!isGameFinished && lettersPicked < 9)
@@ -103,7 +108,6 @@ namespace AppsRepeatProject
         }
 
         // Set a letter in the right position of the 3x3 grid based on the number of letters picked
-
         private void SetLetter(char letter)
         {
             switch (lettersPicked)
@@ -139,7 +143,6 @@ namespace AppsRepeatProject
         }
 
         // Check if all 9 letters are entered and enable Submit button if true
-
         private void CheckSubmitEnabled()
         {
             SubmitButton.IsEnabled = lettersPicked == 9;
@@ -159,8 +162,7 @@ namespace AppsRepeatProject
             Letter8.Text = string.Empty;
         }
 
-        // Handler for when the Submit button is clicked, stops the timer when submited
-
+        // Handler for when the Submit button is clicked
         private void OnSubmitClicked(object sender, EventArgs e)
         {
             timer.Stop();
@@ -169,7 +171,7 @@ namespace AppsRepeatProject
             {
                 playerOneResult = GetLetters();
                 isPlayerOneTurn = false;
-                CurrentPlayerLabel.Text = "Player 2's Turn";
+                CurrentPlayerLabel.Text = $"{playerTwoName}'s Turn";
                 ClearLetters();
                 lettersPicked = 0;
                 timeLeft = 30;
@@ -179,21 +181,21 @@ namespace AppsRepeatProject
             else
             {
                 playerTwoResult = GetLetters();
-                DisplayAlert("Results", $"Player 1: {playerOneResult}\nPlayer 2: {playerTwoResult}", "OK");
+                DisplayAlert("Results", $"{playerOneName}: {playerOneResult}\n{playerTwoName}: {playerTwoResult}", "OK");
                 StartNewRoundButton.IsEnabled = true;
                 ConsonantButton.IsEnabled = false;
                 VowelButton.IsEnabled = false;
                 SubmitButton.IsEnabled = false;
             }
         }
-        
-        //Returns the letters
+
+        // Returns the letters
         private string GetLetters()
         {
             return $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
         }
 
-        //Starts the timer 
+        // Starts the timer 
         private void OnStartTimerClicked(object sender, EventArgs e)
         {
             StartTimer();
@@ -216,37 +218,36 @@ namespace AppsRepeatProject
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            timeLeft--; 
+            timeLeft--;
             Device.BeginInvokeOnMainThread(() =>
             {
                 TimerLabel.Text = timeLeft.ToString();
                 if (timeLeft <= 0)
                 {
-                    timer.Stop(); 
-                    SubmitButton.IsEnabled = false; 
+                    timer.Stop();
+                    SubmitButton.IsEnabled = false;
                     if (!isGameFinished)
                     {
                         DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
-                        isGameFinished = true; 
-                        ConsonantButton.IsEnabled = false; 
-                        VowelButton.IsEnabled = false; 
+                        isGameFinished = true;
+                        ConsonantButton.IsEnabled = false;
+                        VowelButton.IsEnabled = false;
                     }
                 }
             });
         }
 
-        //Handler for starting a new round
+        // Handler for starting a new round
         private void OnStartNewRoundClicked(object sender, EventArgs e)
         {
             if (timer != null)
             {
-                timer.Stop(); 
+                timer.Stop();
             }
 
-            roundNumber++; 
-            UpdateRoundLabel(); 
+            roundNumber++;
+            UpdateRoundLabel();
 
-           
             isPlayerOneTurn = true;
             playerOneResult = string.Empty;
             playerTwoResult = string.Empty;
@@ -254,20 +255,85 @@ namespace AppsRepeatProject
             isGameFinished = false;
             ClearLetters();
 
-            
-            CurrentPlayerLabel.Text = "Player 1's Turn";
+            CurrentPlayerLabel.Text = $"{playerOneName}'s Turn";
             ConsonantButton.IsEnabled = false;
             VowelButton.IsEnabled = false;
             SubmitButton.IsEnabled = false;
-            StartNewRoundButton.IsEnabled = false; 
+            StartNewRoundButton.IsEnabled = false;
         }
 
         private void UpdateRoundLabel()
         {
             RoundLabel.Text = $"Round {roundNumber}";
         }
+
+        // Event handler for Start Game button click
+        private void OnStartGameClicked(object sender, EventArgs e)
+        {
+            playerOneName = PlayerOneNameEntry.Text;
+            playerTwoName = PlayerTwoNameEntry.Text;
+
+            if (string.IsNullOrWhiteSpace(playerOneName) || string.IsNullOrWhiteSpace(playerTwoName))
+            {
+                DisplayAlert("Error", "Please enter names for both players.", "OK");
+                return;
+            }
+
+            // Hide name entry fields and Start Game button
+            PlayerOneNameEntry.IsVisible = false;
+            PlayerTwoNameEntry.IsVisible = false;
+            (sender as Button).IsVisible = false;
+
+            // Show game elements
+            ShowGameElements();
+
+            // Initialize the game state
+            StartNewRound();
+        }
+
+        private void StartNewRound()
+        {
+            roundNumber = 1;
+            UpdateRoundLabel();
+
+            isPlayerOneTurn = true;
+            playerOneResult = string.Empty;
+            playerTwoResult = string.Empty;
+            lettersPicked = 0;
+            isGameFinished = false;
+            ClearLetters();
+
+            CurrentPlayerLabel.Text = $"{playerOneName}'s Turn";
+            ConsonantButton.IsEnabled = false;
+            VowelButton.IsEnabled = false;
+            SubmitButton.IsEnabled = false;
+            StartNewRoundButton.IsEnabled = false;
+        }
+
+        private void HideGameElements()
+        {
+            ConsonantButton.IsVisible = false;
+            VowelButton.IsVisible = false;
+            SubmitButton.IsVisible = false;
+            TimerLabel.IsVisible = false;
+            RoundLabel.IsVisible = false;
+            CurrentPlayerLabel.IsVisible = false;
+            StartNewRoundButton.IsVisible = false;
+        }
+
+        private void ShowGameElements()
+        {
+            ConsonantButton.IsVisible = true;
+            VowelButton.IsVisible = true;
+            SubmitButton.IsVisible = true;
+            TimerLabel.IsVisible = true;
+            RoundLabel.IsVisible = true;
+            CurrentPlayerLabel.IsVisible = true;
+            StartNewRoundButton.IsVisible = true;
+        }
     }
 }
+
 
 
 
