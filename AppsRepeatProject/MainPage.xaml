@@ -35,15 +35,42 @@
             </Grid.ColumnDefinitions>
 
             <!-- Entries for letter input -->
-            <Entry Grid.Row="0" Grid.Column="0" x:Name="Entry0" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="1" x:Name="Entry1" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="2" x:Name="Entry2" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="3" x:Name="Entry3" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="4" x:Name="Entry4" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="5" x:Name="Entry5" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="6" x:Name="Entry6" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="7" x:Name="Entry7" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
-            <Entry Grid.Row="0" Grid.Column="8" x:Name="Entry8" MaxLength="1" WidthRequest="40" IsReadOnly="True" />
+            <Grid Grid.Row="0" Grid.Column="0">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry0" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="1">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry1" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="2">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry2" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="3">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry3" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="4">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry4" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="5">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry5" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="6">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry6" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="7">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry7" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="8">
+                <BoxView Color="DarkGray" CornerRadius="3" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Entry x:Name="Entry8" MaxLength="1" WidthRequest="40" IsReadOnly="True" BackgroundColor="LightGray" TextColor="Black" />
+            </Grid>
         </Grid>
 
         <!-- 3x3 Grid for displaying selected letters -->
