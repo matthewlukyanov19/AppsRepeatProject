@@ -18,8 +18,6 @@ namespace AppsRepeatProject
         private string playerTwoResult = string.Empty;
         private bool isGameFinished = false;
         private int roundNumber = 1;
-
-        // New fields for player names
         private string playerOneName;
         private string playerTwoName;
 
@@ -31,7 +29,6 @@ namespace AppsRepeatProject
             SubmitButton.IsEnabled = false;
             StartNewRoundButton.IsEnabled = false;
             UpdateRoundLabel();
-            // Hide game elements initially
             HideGameElements();
         }
 
@@ -279,12 +276,12 @@ namespace AppsRepeatProject
                 return;
             }
 
-            // Hide name entry fields and Start Game button
+        
             PlayerOneNameEntry.IsVisible = false;
             PlayerTwoNameEntry.IsVisible = false;
             (sender as Button).IsVisible = false;
 
-            // Show game elements
+           
             ShowGameElements();
 
             // Initialize the game state
@@ -310,6 +307,28 @@ namespace AppsRepeatProject
             StartNewRoundButton.IsEnabled = false;
         }
 
+        private void OnLetterTapped(object sender, EventArgs e)
+        {
+            var tappedLabel = sender as Label;
+            if (tappedLabel != null && !string.IsNullOrEmpty(tappedLabel.Text))
+            {
+                AddLetterToEntries(tappedLabel.Text[0]);
+                tappedLabel.Text = string.Empty;
+            }
+        }
+
+        private void AddLetterToEntries(char letter)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                var entry = (Entry)this.FindByName($"Entry{i}");
+                if (string.IsNullOrEmpty(entry.Text))
+                {
+                    entry.Text = letter.ToString();
+                    break;
+                }
+            }
+        }
         private void HideGameElements()
         {
             ConsonantButton.IsVisible = false;

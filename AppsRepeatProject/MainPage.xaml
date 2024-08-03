@@ -86,15 +86,52 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" x:Name="Letter0" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="0" Grid.Column="1" x:Name="Letter1" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="0" Grid.Column="2" x:Name="Letter2" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="1" Grid.Column="0" x:Name="Letter3" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="1" Grid.Column="1" x:Name="Letter4" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="1" Grid.Column="2" x:Name="Letter5" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="2" Grid.Column="0" x:Name="Letter6" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="2" Grid.Column="1" x:Name="Letter7" FontSize="Large" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="2" Grid.Column="2" x:Name="Letter8" FontSize="Large" HorizontalTextAlignment="Center" />
+            <!-- Add TapGestureRecognizer to each Label -->
+            <Label Grid.Row="0" Grid.Column="0" x:Name="Letter0" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="Letter1" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="2" x:Name="Letter2" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="1" Grid.Column="0" x:Name="Letter3" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="Letter4" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="1" Grid.Column="2" x:Name="Letter5" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="2" Grid.Column="0" x:Name="Letter6" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="2" Grid.Column="1" x:Name="Letter7" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="2" Grid.Column="2" x:Name="Letter8" FontSize="Large" HorizontalTextAlignment="Center" TextColor="Black">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLetterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
         </Grid>
 
         <!-- HorizontalStackLayout for consonant and vowel buttons -->
