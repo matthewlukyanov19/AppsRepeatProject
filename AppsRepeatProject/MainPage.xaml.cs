@@ -164,12 +164,13 @@ namespace AppsRepeatProject
         {
             timer.Stop();
             isGameFinished = true;
+
             if (isPlayerOneTurn)
             {
                 playerOneResult = GetLetters();
                 isPlayerOneTurn = false;
-                CurrentPlayerLabel.Text = $"{playerTwoName}'s Turn";
-                ClearLetters();
+                CurrentPlayerLabel.Text = $"Player 2's Turn ({playerTwoName})";
+                ClearLetterEntries(); // Clear the 9 letter entries
                 lettersPicked = 0;
                 timeLeft = 30;
                 TimerLabel.Text = timeLeft.ToString();
@@ -178,12 +179,25 @@ namespace AppsRepeatProject
             else
             {
                 playerTwoResult = GetLetters();
-                DisplayAlert("Results", $"{playerOneName}: {playerOneResult}\n{playerTwoName}: {playerTwoResult}", "OK");
+                DisplayAlert("Results", $"Player 1: {playerOneResult}\nPlayer 2: {playerTwoResult}", "OK");
                 StartNewRoundButton.IsEnabled = true;
                 ConsonantButton.IsEnabled = false;
                 VowelButton.IsEnabled = false;
                 SubmitButton.IsEnabled = false;
             }
+        }
+
+        private void ClearLetterEntries()
+        {
+            Entry0.Text = string.Empty;
+            Entry1.Text = string.Empty;
+            Entry2.Text = string.Empty;
+            Entry3.Text = string.Empty;
+            Entry4.Text = string.Empty;
+            Entry5.Text = string.Empty;
+            Entry6.Text = string.Empty;
+            Entry7.Text = string.Empty;
+            Entry8.Text = string.Empty;
         }
 
         // Returns the letters
@@ -250,9 +264,9 @@ namespace AppsRepeatProject
             playerTwoResult = string.Empty;
             lettersPicked = 0;
             isGameFinished = false;
-            ClearLetters();
+            ClearLetters(); // Clear the 3x3 grid
 
-            CurrentPlayerLabel.Text = $"{playerOneName}'s Turn";
+            CurrentPlayerLabel.Text = $"Player 1's Turn ({playerOneName})";
             ConsonantButton.IsEnabled = false;
             VowelButton.IsEnabled = false;
             SubmitButton.IsEnabled = false;
