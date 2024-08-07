@@ -200,6 +200,27 @@ namespace AppsRepeatProject
             Entry8.Text = string.Empty;
         }
 
+        private void ClearLetterBoxes()
+        {
+            try
+            {
+                Letter0.Text = string.Empty;
+                Letter1.Text = string.Empty;
+                Letter2.Text = string.Empty;
+                Letter3.Text = string.Empty;
+                Letter4.Text = string.Empty;
+                Letter5.Text = string.Empty;
+                Letter6.Text = string.Empty;
+                Letter7.Text = string.Empty;
+                Letter8.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error clearing letter boxes: {ex.Message}");
+            }
+        }
+
+
         // Returns the letters
         private string GetLetters()
         {
@@ -264,7 +285,10 @@ namespace AppsRepeatProject
             playerTwoResult = string.Empty;
             lettersPicked = 0;
             isGameFinished = false;
-            ClearLetters(); // Clear the 3x3 grid
+
+           
+            ClearLetters(); 
+            ClearLetterEntries(); 
 
             CurrentPlayerLabel.Text = $"Player 1's Turn ({playerOneName})";
             ConsonantButton.IsEnabled = false;
@@ -272,6 +296,7 @@ namespace AppsRepeatProject
             SubmitButton.IsEnabled = false;
             StartNewRoundButton.IsEnabled = false;
         }
+
 
         private void UpdateRoundLabel()
         {
@@ -313,6 +338,7 @@ namespace AppsRepeatProject
             lettersPicked = 0;
             isGameFinished = false;
             ClearLetters();
+            ClearLetterBoxes();
 
             CurrentPlayerLabel.Text = $"{playerOneName}'s Turn";
             ConsonantButton.IsEnabled = false;
