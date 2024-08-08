@@ -6,5 +6,6 @@
         <!-- UI elements here -->
         <Label Text="Settings Page" FontSize="24" HorizontalOptions="Center" />
         <!-- Other settings controlsddg -->
+        <!--  ff -->
     </StackLayout>
 </ContentPage>
