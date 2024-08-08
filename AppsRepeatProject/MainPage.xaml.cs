@@ -220,6 +220,24 @@ namespace AppsRepeatProject
             }
         }
 
+        // Check if all 9 Entry controls have text
+        private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+            bool allEntriesFilled = !string.IsNullOrEmpty(Entry0.Text) &&
+                                    !string.IsNullOrEmpty(Entry1.Text) &&
+                                    !string.IsNullOrEmpty(Entry2.Text) &&
+                                    !string.IsNullOrEmpty(Entry3.Text) &&
+                                    !string.IsNullOrEmpty(Entry4.Text) &&
+                                    !string.IsNullOrEmpty(Entry5.Text) &&
+                                    !string.IsNullOrEmpty(Entry6.Text) &&
+                                    !string.IsNullOrEmpty(Entry7.Text) &&
+                                    !string.IsNullOrEmpty(Entry8.Text);
+
+            // Enable or disable the Submit button based on whether all entries are filled
+            SubmitButton.IsEnabled = allEntriesFilled;
+        }
+
 
         // Returns the letters
         private string GetLetters()
