@@ -32,6 +32,12 @@ namespace AppsRepeatProject
             HideGameElements();
         }
 
+        private void OnNavigateToSettingsClicked(object sender, EventArgs e)
+        {
+            // Navigate to the Settings page
+            Navigation.PushAsync(new SettingsPage());
+        }
+
         // Initialize the vowel array with the specified units
         private void InitializeVowelArray()
         {

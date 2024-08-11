@@ -7,5 +7,6 @@
         <Label Text="Settings Page" FontSize="24" HorizontalOptions="Center" />
         <!-- Other settings controlsddg -->
         <!--  ff -->
+        <Button Text="Back to Main Page" Clicked="OnBackButtonClicked" />
     </StackLayout>
 </ContentPage>
