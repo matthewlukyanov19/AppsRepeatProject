@@ -3,10 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppsRepeatProject.SettingsPage">
     <StackLayout Padding="10" Spacing="10">
-        <!-- UI elements here -->
+        <!-- Player Profile Section -->
+        <Label Text="Player Profile" FontSize="20" FontAttributes="Bold" />
+        <Entry x:Name="PlayerNameEntry" Placeholder="Enter Player Name" />
+        <Button Text="Change Avatar" Clicked="OnChangeAvatarClicked" />
+
+        <!-- Game Preferences Section -->
+        <Label Text="Game Preferences" FontSize="20" FontAttributes="Bold" />
+        <Picker x:Name="DifficultyPicker" Title="Select Difficulty">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Easy</x:String>
+                    <x:String>Medium</x:String>
+                    <x:String>Hard</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+        <Switch x:Name="SoundSwitch" />
+        <Label Text="Sound" />
+        
         <Label Text="Settings Page" FontSize="24" HorizontalOptions="Center" />
-        <!-- Other settings controlsddg -->
-        <!--  ff -->
+        
         <Button Text="Back to Main Page" Clicked="OnBackButtonClicked" />
     </StackLayout>
 </ContentPage>
