@@ -2,9 +2,9 @@ using Microsoft.Maui.Controls;
 
 namespace AppsRepeatProject
 {
-    public partial class Home : ContentPage
+    public partial class Homes : ContentPage
     {
-        public Home()
+        public Homes()
         {
             InitializeComponent();
         }
@@ -20,3 +20,5 @@ namespace AppsRepeatProject
         }
     }
 }
+
+

@@ -7,10 +7,7 @@ namespace AppsRepeatProject
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new Home());
+            MainPage = new NavigationPage(new Homes());
         }
-
-        
-
     }
 }
