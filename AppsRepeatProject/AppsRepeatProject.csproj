@@ -57,11 +57,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiXaml Remove="HomePage.xaml" />
+		<MauiXaml Remove="Home.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="HomePage.xaml">
+		<Content Include="Home.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Content>
 	</ItemGroup>

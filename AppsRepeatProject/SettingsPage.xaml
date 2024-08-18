@@ -6,7 +6,7 @@
         <!-- Player Profile Section -->
         <Label Text="Player Profile" FontSize="20" FontAttributes="Bold" />
         <Entry x:Name="PlayerNameEntry" Placeholder="Enter Player Name" />
-        <Button Text="Change Avatar" Clicked="OnChangeAvatarClicked" />
+        <!-- <Button Text="Change Avatar" Clicked="OnChangeAvatarClicked" /> -->
 
         <!-- Game Preferences Sectionv -->
         <Label Text="Game Preferences" FontSize="20" FontAttributes="Bold" />
