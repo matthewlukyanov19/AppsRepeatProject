@@ -179,10 +179,11 @@ namespace AppsRepeatProject
 
             if (isPlayerOneTurn)
             {
-                playerOneResult = GetLetters();
+                playerOneEntries = GetPlayerEntries();
+                playerOneResult = string.Join("", playerOneEntries); // Concatenate letters for display
                 isPlayerOneTurn = false;
                 CurrentPlayerLabel.Text = $"Player 2's Turn ({playerTwoName})";
-                ClearLetterEntries(); // Clear the 9 letter entries
+                ClearLetterEntries();
                 lettersPicked = 0;
                 timeLeft = 30;
                 TimerLabel.Text = timeLeft.ToString();
@@ -190,8 +191,8 @@ namespace AppsRepeatProject
             }
             else
             {
-                playerTwoResult = GetLetters();
-                //DisplayAlert("Results", $"Player 1: {playerOneResult}\nPlayer 2: {playerTwoResult}", "OK");
+                playerTwoEntries = GetPlayerEntries();
+                playerTwoResult = string.Join("", playerTwoEntries); // Concatenate letters for display
                 CalculateAndDisplayScores();
                 StartNewRoundButton.IsEnabled = true;
                 ConsonantButton.IsEnabled = false;
@@ -203,23 +204,26 @@ namespace AppsRepeatProject
         // Method to calculate and display the scores
         private void CalculateAndDisplayScores()
         {
-            int player1Score = CalculateScore(playerOneResult);
-            int player2Score = CalculateScore(playerTwoResult);
+            int playerOneScore = CalculateScore(playerOneEntries);
+            int playerTwoScore = CalculateScore(playerTwoEntries);
 
-            player1Points += player1Score;
-            player2Points += player2Score;
-
-            DisplayAlert("Results", $"Player 1: {playerOneResult} ({player1Score} points)\nPlayer 2: {playerTwoResult} ({player2Score} points)\n\nTotal Scores:\nPlayer 1: {player1Points}\nPlayer 2: {player2Points}", "OK");
+            DisplayAlert("Results",
+                $"Player 1: {playerOneResult} ({playerOneScore} points)\nPlayer 2: {playerTwoResult} ({playerTwoScore} points)",
+                "OK");
         }
 
         // Method to calculate score for a given word
-        private int CalculateScore(string word)
+        private int CalculateScore(string[] playerEntries)
         {
-            if (IsValidWord(word))
+            int score = 0;
+            foreach (var entry in playerEntries)
             {
-                return word.Length;
+                if (Array.Exists(randomLetters, letter => letter == entry))
+                {
+                    score++;
+                }
             }
-            return 0;
+            return score;
         }
 
         // Method to check if the word is valid, not using API for now
@@ -282,10 +286,15 @@ namespace AppsRepeatProject
 
 
         // Returns the letters
-        private string GetLetters()
+        private string[] GetPlayerEntries()
         {
-            return $"{Letter0.Text}{Letter1.Text}{Letter2.Text}{Letter3.Text}{Letter4.Text}{Letter5.Text}{Letter6.Text}{Letter7.Text}{Letter8.Text}";
+            return new string[]
+            {
+        Entry0.Text, Entry1.Text, Entry2.Text, Entry3.Text, Entry4.Text,
+        Entry5.Text, Entry6.Text, Entry7.Text, Entry8.Text
+            };
         }
+
 
         // Starts the timer 
         private void OnStartTimerClicked(object sender, EventArgs e)
