@@ -13,9 +13,14 @@ namespace AppsRepeatProject
         private System.Timers.Timer timer;
         private int timeLeft;
         private int lettersPicked;
+        private int player1Points = 0;
+        private int player2Points = 0;
         private bool isPlayerOneTurn = true;
         private string playerOneResult = string.Empty;
         private string playerTwoResult = string.Empty;
+        private string[] randomLetters = new string[9];
+        private string[] playerOneEntries = new string[9];
+        private string[] playerTwoEntries = new string[9];
         private bool isGameFinished = false;
         private int roundNumber = 1;
         private string playerOneName;
@@ -113,6 +118,7 @@ namespace AppsRepeatProject
         // Set a letter in the right position of the 3x3 grid based on the number of letters picked
         private void SetLetter(char letter)
         {
+            randomLetters[lettersPicked] = letter.ToString(); // Store the random letters
             switch (lettersPicked)
             {
                 case 0:
@@ -185,7 +191,8 @@ namespace AppsRepeatProject
             else
             {
                 playerTwoResult = GetLetters();
-                DisplayAlert("Results", $"Player 1: {playerOneResult}\nPlayer 2: {playerTwoResult}", "OK");
+                //DisplayAlert("Results", $"Player 1: {playerOneResult}\nPlayer 2: {playerTwoResult}", "OK");
+                CalculateAndDisplayScores();
                 StartNewRoundButton.IsEnabled = true;
                 ConsonantButton.IsEnabled = false;
                 VowelButton.IsEnabled = false;
@@ -193,6 +200,35 @@ namespace AppsRepeatProject
             }
         }
 
+        // Method to calculate and display the scores
+        private void CalculateAndDisplayScores()
+        {
+            int player1Score = CalculateScore(playerOneResult);
+            int player2Score = CalculateScore(playerTwoResult);
+
+            player1Points += player1Score;
+            player2Points += player2Score;
+
+            DisplayAlert("Results", $"Player 1: {playerOneResult} ({player1Score} points)\nPlayer 2: {playerTwoResult} ({player2Score} points)\n\nTotal Scores:\nPlayer 1: {player1Points}\nPlayer 2: {player2Points}", "OK");
+        }
+
+        // Method to calculate score for a given word
+        private int CalculateScore(string word)
+        {
+            if (IsValidWord(word))
+            {
+                return word.Length;
+            }
+            return 0;
+        }
+
+        // Method to check if the word is valid, not using API for now
+        private bool IsValidWord(string word)
+        {
+            List<string> validWords = new List<string> { "BANANAS", "DOGS", "GRAPE", "APPLE", "I" };
+
+            return validWords.Contains(word.ToUpper());
+        }
         private void ClearLetterEntries()
         {
             Entry0.Text = string.Empty;
@@ -378,6 +414,8 @@ namespace AppsRepeatProject
             {
                 AddLetterToEntries(tappedLabel.Text[0]);
                 tappedLabel.Text = string.Empty;
+
+                SubmitButton.IsEnabled = true;
             }
         }
 
