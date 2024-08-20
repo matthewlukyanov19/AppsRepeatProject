@@ -6,7 +6,7 @@ namespace AppsRepeatProject
 {
     public partial class MainPage : ContentPage
     {
-        //APIKEY: f95a746971msh82f62cd195b8924p11e97ejsnb5a03f4800ab
+        //APIKEY: f95a746971msh82f62cd195b8924p11e97ejsnb5a03f4800ab 
 
         // Arrays for vowels and consonants
         private readonly char[] vowels = new char[67];
