@@ -1,8 +1,10 @@
 ﻿using System;
+using Newtonsoft.Json;
 using System.Timers;
 using Microsoft.Maui.Controls;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 
 namespace AppsRepeatProject
@@ -185,15 +187,12 @@ namespace AppsRepeatProject
             if (isPlayerOneTurn)
             {
                 playerOneResult = GetPlayerEntries();
+
                 bool isValid = await CheckWordValidity(playerOneResult);
 
                 if (isValid)
                 {
                     player1Points += playerOneResult.Length;
-                }
-                else
-                {
-                    player1Points = 0;
                 }
 
                 isPlayerOneTurn = false;
@@ -207,18 +206,18 @@ namespace AppsRepeatProject
             else
             {
                 playerTwoResult = GetPlayerEntries();
+
                 bool isValid = await CheckWordValidity(playerTwoResult);
 
                 if (isValid)
                 {
                     player2Points += playerTwoResult.Length;
                 }
-                else
-                {
-                    player2Points = 0;
-                }
 
-                CalculateAndDisplayScores();
+                await DisplayAlert("Results",
+                    $"Player 1 ({playerOneName}): {player1Points} points\nPlayer 2 ({playerTwoName}): {player2Points} points",
+                    "OK");
+
                 StartNewRoundButton.IsEnabled = true;
                 ConsonantButton.IsEnabled = false;
                 VowelButton.IsEnabled = false;
@@ -226,29 +225,69 @@ namespace AppsRepeatProject
             }
         }
 
+
+
+        //Models for API key, using MeriamWebbster
+        public class Definition
+        {
+            public string Fl { get; set; } // Part of Speech
+            public List<string> Shortdef { get; set; } // List of Definitions
+        }
+
+        public class WordEntry
+        {
+            public List<Definition> Def { get; set; }
+        }
+
+        public class ApiResponse
+        {
+            public List<WordEntry> WordEntries { get; set; }
+        }
+
+
+
+
         // Checks the validity of a given word by calling the WordsAPI.
         private async Task<bool> CheckWordValidity(string word)
         {
             using (HttpClient client = new HttpClient())
             {
-                //I know in real life scenarios storing API keys directly in the source code is not best practice
+                // I know in real life scenarios storing API keys directly in the source code is not best practice
                 //Due to security reasons. For purpose of this academic project I did not store them in secure location
-                string apiKey = "f95a746971msh82f62cd195b8924p11e97ejsnb5a03f4800ab";
-                string url = $"https://wordsapiv1.p.rapidapi.com/words/{word}";
+                string apiKey = "1afe06d2-92cc-47b4-9491-ead2bbf852f7";
+                string url = $"https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={apiKey}";
 
-                client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
-                client.DefaultRequestHeaders.Add("x-rapidapi-host", "wordsapiv1.p.rapidapi.com");
-
-                HttpResponseMessage response = await client.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
+                    HttpResponseMessage response = await client.GetAsync(url);
                     string content = await response.Content.ReadAsStringAsync();
 
-                    if (content.Contains("\"word\""))
+                   
+                    var entries = JsonConvert.DeserializeObject<List<WordEntry>>(content);
+
+                    
+                    if (entries != null && entries.Count > 0)
                     {
-                        return true;
+                        foreach (var entry in entries)
+                        {
+                            if (entry.Def != null && entry.Def.Count > 0)
+                            {
+                                return true; 
+                            }
+                        }
                     }
+                }
+                catch (HttpRequestException)
+                {
+                    // Handle HTTP request error
+                }
+                catch (JsonException)
+                {
+                    // Handle JSON parsing error
+                }
+                catch (Exception)
+                {
+                    // Handle general exceptions
                 }
 
                 return false;
@@ -256,30 +295,34 @@ namespace AppsRepeatProject
         }
 
 
+
+
+        private async void TestApi()
+        {
+            string word = "example";
+            bool isValid = await CheckWordValidity(word);
+
+            Console.WriteLine($"The word '{word}' is {(isValid ? "valid" : "invalid")}.");
+        }
+
+
+
         // Method to calculate and display the scores
-        private void CalculateAndDisplayScores()
+        // Update this method to directly display points
+        private async void CalculateAndDisplayScores()
         {
-            int playerOneScore = CalculateScore(playerOneEntries);
-            int playerTwoScore = CalculateScore(playerTwoEntries);
-
-            DisplayAlert("Results",
-                $"Player 1: {playerOneResult} ({playerOneScore} points)\nPlayer 2: {playerTwoResult} ({playerTwoScore} points)",
-                "OK");
-        }
-
-        // Method to calculate score for a given word
-        private int CalculateScore(string[] playerEntries)
-        {
-            int score = 0;
-            foreach (var entry in playerEntries)
+            try
             {
-                if (Array.Exists(randomLetters, letter => letter == entry))
-                {
-                    score++;
-                }
+                await DisplayAlert("Results",
+                    $"Player 1 ({playerOneName}): {player1Points} points\nPlayer 2 ({playerTwoName}): {player2Points} points",
+                    "OK");
             }
-            return score;
+            catch (Exception ex)
+            {
+                // Handle or log the exception as needed
+            }
         }
+
         private void ClearLetterEntries()
         {
             Entry0.Text = string.Empty;
@@ -348,6 +391,7 @@ namespace AppsRepeatProject
 
             return result;
         }
+
 
 
 
@@ -450,6 +494,7 @@ namespace AppsRepeatProject
 
             // Initialize the game state
             StartNewRound();
+            TestApi();
         }
 
         private void StartNewRound()
