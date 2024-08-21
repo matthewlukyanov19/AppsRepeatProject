@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Timers;
 using Microsoft.Maui.Controls;
+using System.Net.Http;
+using System.Threading.Tasks;
+
 
 namespace AppsRepeatProject
 {
@@ -174,15 +177,25 @@ namespace AppsRepeatProject
         }
 
         // Handler for when the Submit button is clicked
-        private void OnSubmitClicked(object sender, EventArgs e)
+        private async void OnSubmitClicked(object sender, EventArgs e)
         {
             timer.Stop();
             isGameFinished = true;
 
             if (isPlayerOneTurn)
             {
-                playerOneEntries = GetPlayerEntries();
-                playerOneResult = string.Join("", playerOneEntries); // Concatenate letters for display
+                playerOneResult = GetPlayerEntries();
+                bool isValid = await CheckWordValidity(playerOneResult);
+
+                if (isValid)
+                {
+                    player1Points += playerOneResult.Length;
+                }
+                else
+                {
+                    player1Points = 0;
+                }
+
                 isPlayerOneTurn = false;
                 CurrentPlayerLabel.Text = $"Player 2's Turn ({playerTwoName})";
                 ClearLetterEntries();
@@ -193,8 +206,18 @@ namespace AppsRepeatProject
             }
             else
             {
-                playerTwoEntries = GetPlayerEntries();
-                playerTwoResult = string.Join("", playerTwoEntries); // Concatenate letters for display
+                playerTwoResult = GetPlayerEntries();
+                bool isValid = await CheckWordValidity(playerTwoResult);
+
+                if (isValid)
+                {
+                    player2Points += playerTwoResult.Length;
+                }
+                else
+                {
+                    player2Points = 0;
+                }
+
                 CalculateAndDisplayScores();
                 StartNewRoundButton.IsEnabled = true;
                 ConsonantButton.IsEnabled = false;
@@ -202,6 +225,36 @@ namespace AppsRepeatProject
                 SubmitButton.IsEnabled = false;
             }
         }
+
+        // Checks the validity of a given word by calling the WordsAPI.
+        private async Task<bool> CheckWordValidity(string word)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                //I know in real life scenarios storing API keys directly in the source code is not best practice
+                //Due to security reasons. For purpose of this academic project I did not store them in secure location
+                string apiKey = "f95a746971msh82f62cd195b8924p11e97ejsnb5a03f4800ab";
+                string url = $"https://wordsapiv1.p.rapidapi.com/words/{word}";
+
+                client.DefaultRequestHeaders.Add("x-rapidapi-key", apiKey);
+                client.DefaultRequestHeaders.Add("x-rapidapi-host", "wordsapiv1.p.rapidapi.com");
+
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+
+                    if (content.Contains("\"word\""))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
 
         // Method to calculate and display the scores
         private void CalculateAndDisplayScores()
@@ -226,14 +279,6 @@ namespace AppsRepeatProject
                 }
             }
             return score;
-        }
-
-        // Method to check if the word is valid, not using API for now
-        private bool IsValidWord(string word)
-        {
-            List<string> validWords = new List<string> { "BANANAS", "DOGS", "GRAPE", "APPLE", "I" };
-
-            return validWords.Contains(word.ToUpper());
         }
         private void ClearLetterEntries()
         {
@@ -288,14 +333,11 @@ namespace AppsRepeatProject
 
 
         // Returns the letters
-        private string[] GetPlayerEntries()
+        private string GetPlayerEntries()
         {
-            return new string[]
-            {
-        Entry0.Text, Entry1.Text, Entry2.Text, Entry3.Text, Entry4.Text,
-        Entry5.Text, Entry6.Text, Entry7.Text, Entry8.Text
-            };
+            return $"{Entry0.Text}{Entry1.Text}{Entry2.Text}{Entry3.Text}{Entry4.Text}{Entry5.Text}{Entry6.Text}{Entry7.Text}{Entry8.Text}";
         }
+
 
 
         // Starts the timer 
