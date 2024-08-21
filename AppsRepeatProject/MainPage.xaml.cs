@@ -335,8 +335,20 @@ namespace AppsRepeatProject
         // Returns the letters
         private string GetPlayerEntries()
         {
-            return $"{Entry0.Text}{Entry1.Text}{Entry2.Text}{Entry3.Text}{Entry4.Text}{Entry5.Text}{Entry6.Text}{Entry7.Text}{Entry8.Text}";
+            string result = string.Empty;
+
+            for (int i = 0; i < 9; i++)
+            {
+                var entry = (Entry)this.FindByName($"Entry{i}");
+                if (!string.IsNullOrEmpty(entry.Text))
+                {
+                    result += entry.Text;
+                }
+            }
+
+            return result;
         }
+
 
 
 
