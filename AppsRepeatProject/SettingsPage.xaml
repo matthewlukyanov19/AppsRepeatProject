@@ -3,13 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppsRepeatProject.SettingsPage">
     <StackLayout Padding="10" Spacing="10">
+        
         <!-- Player Profile Section -->
         <Label Text="Player Profile" FontSize="20" FontAttributes="Bold" />
         <Entry x:Name="PlayerNameEntry" Placeholder="Enter Player Name" />
-        <!-- <Button Text="Change Avatar" Clicked="OnChangeAvatarClicked" /> -->
 
-        <!-- Game Preferences Sectionv -->
+        <!-- Game Preferences Section -->
         <Label Text="Game Preferences" FontSize="20" FontAttributes="Bold" />
+
+        <!-- Difficulty Picker -->
+        <Label Text="Difficulty Level" FontSize="16" />
         <Picker x:Name="DifficultyPicker" Title="Select Difficulty">
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
@@ -19,11 +22,29 @@
                 </x:Array>
             </Picker.ItemsSource>
         </Picker>
-        <Switch x:Name="SoundSwitch" />
-        <Label Text="Sound" />
-        
-        <Label Text="Settings Page" FontSize="24" HorizontalOptions="Center" />
-        
+
+        <!-- Sound Switch -->
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Sound" VerticalOptions="Center" />
+            <Switch x:Name="SoundSwitch" VerticalOptions="Center" />
+        </StackLayout>
+
+        <!-- Dark/Light Mode Switch -->
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Dark Mode" VerticalOptions="Center" />
+            <Switch x:Name="DarkModeSwitch" Toggled="OnDarkModeToggled" VerticalOptions="Center" />
+        </StackLayout>
+
+        <!-- Timer Length Slider -->
+        <Label Text="Timer Length (seconds)" FontSize="16" />
+        <Slider x:Name="TimerLengthSlider"
+                Minimum="10"
+                Maximum="120"
+                Value="30"
+                ValueChanged="OnTimerLengthChanged" />
+        <Label x:Name="TimerLengthLabel" Text="30 seconds" FontSize="16" />
+
+        <!-- Back to Main Page Button -->
         <Button Text="Back to Main Page" Clicked="OnBackButtonClicked" />
     </StackLayout>
 </ContentPage>
