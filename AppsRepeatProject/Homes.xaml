@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppsRepeatProject.Homes">
+             x:Class="AppsRepeatProject.Homes"
+             BackgroundColor="LightBlue">
 
-    <VerticalStackLayout>
+    <VerticalStackLayout
+        VerticalOptions="CenterAndExpand"
+        HorizontalOptions="CenterAndExpand"
+        Spacing="20"
+        Padding="30">
+
         <Label 
             Text="Welcome to Countdown!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            FontSize="24"
+            FontAttributes="Bold"
+            HorizontalOptions="Center" 
+            VerticalOptions="Center" />
 
         <Button Text="Start Game" 
                 Clicked="OnStartGameClicked"
                 BackgroundColor="Orange" 
                 TextColor="White"
-                VerticalOptions="Center" />
+                BorderColor="Blue"
+                BorderWidth="2"
+                CornerRadius="10"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="200"
+                HeightRequest="50"/>
 
         <Button Text="Go to Settings" 
                 Clicked="OnGoToSettingsClicked"
                 BackgroundColor="Orange" 
                 TextColor="White"
-                VerticalOptions="Center" />
+                BorderColor="Blue"
+                BorderWidth="2"
+                CornerRadius="10"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="200"
+                HeightRequest="50"/>
     </VerticalStackLayout>
 </ContentPage>
 

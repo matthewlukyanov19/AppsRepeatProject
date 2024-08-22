@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppsRepeatProject.MainPage">
 
+
     <StackLayout Padding="10" Spacing="10">
         <!-- Player name entries -->
         <Label Text="Enter Player 1 Name:" FontSize="Medium" HorizontalOptions="Center" VerticalOptions="Center" />
@@ -146,7 +147,7 @@
         <!-- Buttons for submit and starting timer/new round -->
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
             <Button Text="Submit" Clicked="OnSubmitClicked" x:Name="SubmitButton" IsEnabled="False" BackgroundColor="Orange" />
-            <Button Text="Start Timer" Clicked="OnStartTimerClicked" BackgroundColor="Orange" />
+            <Button Text="Start Timer" Clicked="OnStartTimerClicked" x:Name="StartTimerButton" BackgroundColor="Orange" />
             <Button Text="Start New Round" Clicked="OnStartNewRoundClicked" x:Name="StartNewRoundButton" IsEnabled="False" BackgroundColor="Orange" />
         </HorizontalStackLayout>
 

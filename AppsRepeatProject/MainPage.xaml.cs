@@ -11,8 +11,7 @@ namespace AppsRepeatProject
 {
     public partial class MainPage : ContentPage
     {
-        //APIKEY: f95a746971msh82f62cd195b8924p11e97ejsnb5a03f4800ab 
-
+       
         // Arrays for vowels and consonants
         private readonly char[] vowels = new char[67];
         private readonly char[] consonants = new char[74];
@@ -29,6 +28,7 @@ namespace AppsRepeatProject
         private string[] playerOneEntries = new string[9];
         private string[] playerTwoEntries = new string[9];
         private bool isGameFinished = false;
+        private bool isTimerRunning = false; 
         private int roundNumber = 1;
         private string playerOneName;
         private string playerTwoName;
@@ -230,7 +230,7 @@ namespace AppsRepeatProject
         //Models for API key, using MeriamWebbster
         public class Definition
         {
-            public string Fl { get; set; } // Part of Speech
+            public string Fl { get; set; }
             public List<string> Shortdef { get; set; } // List of Definitions
         }
 
@@ -308,7 +308,6 @@ namespace AppsRepeatProject
 
 
         // Method to calculate and display the scores
-        // Update this method to directly display points
         private async void CalculateAndDisplayScores()
         {
             try
@@ -370,7 +369,7 @@ namespace AppsRepeatProject
                                     !string.IsNullOrEmpty(Entry7.Text) &&
                                     !string.IsNullOrEmpty(Entry8.Text);
 
-            // Enable or disable the Submit button based on whether all entries are filled
+       
             SubmitButton.IsEnabled = allEntriesFilled;
         }
 
@@ -399,6 +398,12 @@ namespace AppsRepeatProject
         // Starts the timer 
         private void OnStartTimerClicked(object sender, EventArgs e)
         {
+            if (isTimerRunning)
+            {
+                
+                return;
+            }
+
             StartTimer();
         }
 
@@ -415,6 +420,9 @@ namespace AppsRepeatProject
             lettersPicked = 0;
             ClearLetters();
             isGameFinished = false;
+
+            isTimerRunning = true;  
+            StartTimerButton.IsEnabled = false;  
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
@@ -427,6 +435,8 @@ namespace AppsRepeatProject
                 {
                     timer.Stop();
                     SubmitButton.IsEnabled = false;
+                    isTimerRunning = false;  
+                    StartTimerButton.IsEnabled = true;  
                     if (!isGameFinished)
                     {
                         DisplayAlert("Time's up!", "The 30 seconds are over.", "OK");
@@ -444,21 +454,20 @@ namespace AppsRepeatProject
             if (timer != null)
             {
                 timer.Stop();
+                isTimerRunning = false;  
+                StartTimerButton.IsEnabled = true;  
             }
 
+            // Reset the game state for a new round
             roundNumber++;
             UpdateRoundLabel();
-
             isPlayerOneTurn = true;
             playerOneResult = string.Empty;
             playerTwoResult = string.Empty;
             lettersPicked = 0;
             isGameFinished = false;
-
-           
-            ClearLetters(); 
-            ClearLetterEntries(); 
-
+            ClearLetters();
+            ClearLetterEntries();
             CurrentPlayerLabel.Text = $"Player 1's Turn ({playerOneName})";
             ConsonantButton.IsEnabled = false;
             VowelButton.IsEnabled = false;
