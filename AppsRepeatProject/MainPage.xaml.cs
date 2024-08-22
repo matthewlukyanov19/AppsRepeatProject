@@ -34,6 +34,7 @@ namespace AppsRepeatProject
         private bool isTimerRunning = false;  
         private string playerOneName;
         private string playerTwoName;
+        private GameHistory gameHistory = new GameHistory();
 
         public MainPage()
         {
@@ -44,6 +45,7 @@ namespace AppsRepeatProject
             StartNewRoundButton.IsEnabled = false;
             UpdateRoundLabel();
             HideGameElements();
+            gameHistory.LoadGameHistoryAsync().Wait();
         }
 
         private void OnNavigateToSettingsClicked(object sender, EventArgs e)
@@ -488,7 +490,6 @@ namespace AppsRepeatProject
 
         private async void EndGame()
         {
-            // Determine the winner
             string winner;
             if (player1Points > player2Points)
             {
@@ -503,6 +504,18 @@ namespace AppsRepeatProject
                 winner = "It's a tie!";
             }
 
+            // Save game record
+            var record = new Results
+            {
+                Timestamp = DateTime.Now,
+                PlayerOneName = playerOneName,
+                PlayerOneScore = player1Points,
+                PlayerTwoName = playerTwoName,
+                PlayerTwoScore = player2Points
+            };
+            gameHistory.AddGameRecord(record);
+            await gameHistory.SaveGameHistoryAsync();
+
             // Display a congratulatory message and offer to start a new game
             bool startNewGame = await DisplayAlert("Game Over", $"{winner}\nCongratulations!\nWould you like to start a new game?", "Yes", "No");
 
@@ -510,6 +523,11 @@ namespace AppsRepeatProject
             {
                 StartNewGame();
             }
+        }
+
+        private async void OnViewHistoryClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new HistoryPage(gameHistory));
         }
 
 

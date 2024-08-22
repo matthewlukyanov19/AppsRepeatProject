@@ -1,0 +1,17 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppsRepeatProject.HistoryPage">
+    <StackLayout Padding="10" Spacing="10">
+        <Label Text="Game History" FontSize="24" HorizontalOptions="Center" />
+
+        <!-- ListView to display game records -->
+        <ListView x:Name="GameHistoryListView" ItemsSource="{Binding GameRecords}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding PlayerOneName}" Detail="{Binding Summary}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackLayout>
+</ContentPage>

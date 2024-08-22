@@ -149,6 +149,8 @@
             <Button Text="Submit" Clicked="OnSubmitClicked" x:Name="SubmitButton" IsEnabled="False" BackgroundColor="Orange" />
             <Button Text="Start Timer" Clicked="OnStartTimerClicked" x:Name="StartTimerButton" BackgroundColor="Orange" />
             <Button Text="Start New Round" Clicked="OnStartNewRoundClicked" x:Name="StartNewRoundButton" IsEnabled="False" BackgroundColor="Orange" />
+            <Button Text="View Game History" Clicked="OnViewHistoryClicked" />
+
         </HorizontalStackLayout>
 
     </StackLayout>
