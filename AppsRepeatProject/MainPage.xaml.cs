@@ -21,15 +21,17 @@ namespace AppsRepeatProject
         private int lettersPicked;
         private int player1Points = 0;
         private int player2Points = 0;
+        private int currentRound = 1;
+        private int roundNumber = 1;
         private bool isPlayerOneTurn = true;
+        private const int maxRounds = 6;
         private string playerOneResult = string.Empty;
         private string playerTwoResult = string.Empty;
         private string[] randomLetters = new string[9];
         private string[] playerOneEntries = new string[9];
         private string[] playerTwoEntries = new string[9];
         private bool isGameFinished = false;
-        private bool isTimerRunning = false; 
-        private int roundNumber = 1;
+        private bool isTimerRunning = false;  
         private string playerOneName;
         private string playerTwoName;
 
@@ -454,12 +456,21 @@ namespace AppsRepeatProject
             if (timer != null)
             {
                 timer.Stop();
-                isTimerRunning = false;  
-                StartTimerButton.IsEnabled = true;  
+                isTimerRunning = false;
+                StartTimerButton.IsEnabled = true;
+            }
+
+            // Increment the round counter
+            roundNumber++;
+
+            // Check if the game should end
+            if (roundNumber > maxRounds)
+            {
+                EndGame();
+                return; // Exit the method as the game is over
             }
 
             // Reset the game state for a new round
-            roundNumber++;
             UpdateRoundLabel();
             isPlayerOneTurn = true;
             playerOneResult = string.Empty;
@@ -475,6 +486,48 @@ namespace AppsRepeatProject
             StartNewRoundButton.IsEnabled = false;
         }
 
+        private async void EndGame()
+        {
+            // Determine the winner
+            string winner;
+            if (player1Points > player2Points)
+            {
+                winner = $"{playerOneName} wins!";
+            }
+            else if (player2Points > player1Points)
+            {
+                winner = $"{playerTwoName} wins!";
+            }
+            else
+            {
+                winner = "It's a tie!";
+            }
+
+            // Display a congratulatory message and offer to start a new game
+            bool startNewGame = await DisplayAlert("Game Over", $"{winner}\nCongratulations!\nWould you like to start a new game?", "Yes", "No");
+
+            if (startNewGame)
+            {
+                StartNewGame();
+            }
+        }
+
+
+        private void StartNewGame()
+        {
+            // Reset the game state for a new game
+            roundNumber = 1;
+            player1Points = 0;
+            player2Points = 0;
+            UpdateRoundLabel();
+            ClearLetters();
+            ClearLetterEntries();
+            CurrentPlayerLabel.Text = $"Player 1's Turn ({playerOneName})";
+            ConsonantButton.IsEnabled = false;
+            VowelButton.IsEnabled = false;
+            SubmitButton.IsEnabled = false;
+            StartNewRoundButton.IsEnabled = false;
+        }
 
         private void UpdateRoundLabel()
         {
