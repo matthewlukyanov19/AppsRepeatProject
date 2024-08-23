@@ -40,6 +40,18 @@
                 VerticalOptions="Center"
                 WidthRequest="200"
                 HeightRequest="50"/>
+
+        <!-- MediaElement for playing the Countdown clock sound -->
+        <!--<MediaElement x:Name="CountdownSound"
+                      Source="countdown_clock.mp3"
+                      AutoPlay="True"
+                      IsLooping="True"
+                      ShouldKeepScreenOn="False"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center"
+                      HeightRequest="0" WidthRequest="0"/>-->
+
     </VerticalStackLayout>
 </ContentPage>
+
 

@@ -45,7 +45,7 @@ namespace AppsRepeatProject
             StartNewRoundButton.IsEnabled = false;
             UpdateRoundLabel();
             HideGameElements();
-            gameHistory.LoadGameHistoryAsync().Wait();
+            gameHistory.LoadGameHistoryAsync();
         }
 
         private void OnNavigateToSettingsClicked(object sender, EventArgs e)
@@ -300,7 +300,7 @@ namespace AppsRepeatProject
 
 
 
-
+        //Just a test method to make sure API works.
         private async void TestApi()
         {
             string word = "example";
@@ -525,6 +525,7 @@ namespace AppsRepeatProject
             }
         }
 
+        //Brings you to history page
         private async void OnViewHistoryClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new HistoryPage(gameHistory));
@@ -577,6 +578,7 @@ namespace AppsRepeatProject
             TestApi();
         }
 
+        //Method for hadnling new round start
         private void StartNewRound()
         {
             roundNumber = 1;
@@ -597,6 +599,8 @@ namespace AppsRepeatProject
             StartNewRoundButton.IsEnabled = false;
         }
 
+        // Handle letter tap by adding it to entries and clearing the label.
+
         private void OnLetterTapped(object sender, EventArgs e)
         {
             var tappedLabel = sender as Label;
@@ -609,6 +613,7 @@ namespace AppsRepeatProject
             }
         }
 
+        // Add a letter to the first empty entry field.
         private void AddLetterToEntries(char letter)
         {
             for (int i = 0; i < 9; i++)
@@ -621,6 +626,7 @@ namespace AppsRepeatProject
                 }
             }
         }
+        // Hide all game-related UI elements.
         private void HideGameElements()
         {
             ConsonantButton.IsVisible = false;
@@ -631,7 +637,7 @@ namespace AppsRepeatProject
             CurrentPlayerLabel.IsVisible = false;
             StartNewRoundButton.IsVisible = false;
         }
-
+        // Show all game-related UI elements.
         private void ShowGameElements()
         {
             ConsonantButton.IsVisible = true;

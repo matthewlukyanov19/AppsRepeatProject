@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 
 using System.Threading.Tasks;
@@ -22,19 +23,36 @@ public class GameHistory
 
     public async Task SaveGameHistoryAsync()
     {
-        var json = JsonConvert.SerializeObject(GameRecords); // Use Newtonsoft.Json
+        var json = JsonConvert.SerializeObject(GameRecords); 
         var path = Path.Combine(FileSystem.AppDataDirectory, FileName);
         await File.WriteAllTextAsync(path, json);
     }
 
     public async Task LoadGameHistoryAsync()
     {
-        var path = Path.Combine(FileSystem.AppDataDirectory, FileName);
-        if (File.Exists(path))
+        Debug.WriteLine("LoadGameHistoryAsync started.");
+
+        try
         {
-            var json = await File.ReadAllTextAsync(path);
-            GameRecords = JsonConvert.DeserializeObject<ObservableCollection<Results>>(json)
-                           ?? new ObservableCollection<Results>();
+            var path = Path.Combine(FileSystem.AppDataDirectory, FileName);
+            if (File.Exists(path))
+            {
+                var json = await File.ReadAllTextAsync(path);
+                GameRecords = JsonConvert.DeserializeObject<ObservableCollection<Results>>(json)
+                               ?? new ObservableCollection<Results>();
+
+                Debug.WriteLine("LoadGameHistoryAsync completed successfully.");
+            }
+            else
+            {
+                Debug.WriteLine("No game history file found.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"LoadGameHistoryAsync error: {ex.Message}");
+            Debug.WriteLine(ex.StackTrace);
         }
     }
+
 }
